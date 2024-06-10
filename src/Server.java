@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -54,7 +55,8 @@ public class Server {
             roomListMsg.append(room.getRoomId()).append(",")
                     .append(room.getTitle()).append(",")
                     .append(room.getCurrentMembers()).append("/")
-                    .append(room.getMaxMembers()).append(";");
+                    .append(room.getMaxMembers()).append(",")
+                    .append(room.getCreatorUid()).append(";");
         }
         for (ClientHandler handler : clientHandlers) {
             handler.sendMessage(roomListMsg.toString());
@@ -124,9 +126,10 @@ public class Server {
                 String[] parts = message.split(":");
                 String title = parts[1];
                 int membersCnt = Integer.parseInt(parts[2]);
+                String uid = parts[3];
 
                 String roomId = "room" + (roomMap.size() + 1);
-                Room room = new Room(roomId, title, membersCnt);
+                Room room = new Room(roomId, title, membersCnt, uid);
                 roomMap.put(roomId, room);
 
                 broadcastRoomList();
